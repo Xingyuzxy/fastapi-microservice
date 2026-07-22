@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app
+  labels:
+    app: fastapi-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+  # 注意：如果你的 GHCR 镜像是私有的（Private），需要在 K8s 中配置 imagePullSecrets，
+  # 如果是公开的（Public）则不需要。
+    spec:
+      containers:
+      - name: fastapi
+        image: ghcr.io/xingyuzxy/my-fastapi-app:latest 
+        imagePullPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+  labels:
+    app: fastapi-app
+spec:
+  type: NodePort
+  ports:
+  - port: 80        
+    targetPort: 8000 
+    protocol: TCP
+    name: http
+  selector:
+    app: fastapi-app

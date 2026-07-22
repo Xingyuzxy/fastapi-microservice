@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: ghcr.io/xingyuzxy/my-fastapi-app:latest 
+        image: ghcr.io/xingyuzxy/my-fastapi-app:v2
         imagePullPolicy: Always
 
 ---
@@ -30,9 +30,9 @@ metadata:
   labels:
     app: fastapi-app
 spec:
-  type: NodePort
+  type: LoadBalancer  
   ports:
-  - port: 80        
+  - port: 80         
     targetPort: 8000 
     protocol: TCP
     name: http

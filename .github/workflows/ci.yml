@@ -42,4 +42,4 @@ jobs:
         push: true
         tags: |
           ghcr.io/my-fastapi-app:latest
-          ghcr.io/my-fastapi-app:${{ github.sha }}
+          ghcr.io/my-fastapi-app:v1

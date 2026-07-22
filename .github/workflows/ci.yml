@@ -41,5 +41,5 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/my-fastapi-app:latest
-          ghcr.io/my-fastapi-app:v1
+          ghcr.io/${{github.repository_owner}}/my-fastapi-app:latest
+          ghcr.io/${{github.repository_owner}}/my-fastapi-app:v1

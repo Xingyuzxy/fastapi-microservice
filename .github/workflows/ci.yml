@@ -1,0 +1,45 @@
+name: CI CD pipelines
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run a test command
+      run: echo "Hello, GitHub Actions!"
+  
+  cd:
+    needs: ci  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }} 
+
+    - name: Lowercase repository name
+      id: string_case
+      uses: ASzc/change-string-case-action@v5
+      with:
+        string: ${{ github.repository }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          ghcr.io/my-fastapi-app:latest
+          ghcr.io/my-fastapi-app:${{ github.sha }}

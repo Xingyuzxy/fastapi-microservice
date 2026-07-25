@@ -1,0 +1,17 @@
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+releases:
+  - name: argocd
+    namespace: argocd              
+    createNamespace: true          
+    chart: argo/argo-cd           
+    version: 7.5.0         
+    
+    values:
+      - server:
+          service:
+            type: LoadBalancer
+          extraArgs:
+            - --insecure

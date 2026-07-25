@@ -1,0 +1,3 @@
+kubectl config set-cluster cluster2 \
+> --server=https://10.244.223.43:6443
+Cluster "cluster2" set.

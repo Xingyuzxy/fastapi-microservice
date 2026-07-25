@@ -11,3 +11,6 @@ sudo mv helmfile /usr/local/bin/
 chmod +x /usr/local/bin/helmfile
 
 helm plugin install https://github.com/databus23/helm-diff
+
+# rm -rf ~/.local/share/helm/plugins/helm-diff
+# helm plugin install https://github.com/databus23/helm-diff --version v3.9.12

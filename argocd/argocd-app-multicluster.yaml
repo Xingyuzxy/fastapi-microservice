@@ -12,7 +12,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/your-username/your-fastapi-repo.git'
+        repoURL: 'https://github.com/Xingyuzxy/fastapi-microservice.git'
         targetRevision: HEAD
         path: k8s/overlays/prod  
       destination:

@@ -50,5 +50,6 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/${{ steps.string.outputs.lowercase }}/my-fastapi-app:latest
+          ghcr.io/${{ steps.string.outputs.lowercase }}/my-fastapi-app:dev-latest
+          ghcr.io/${{ steps.string.outputs.lowercase }}/my-fastapi-app:prod-latest
           ghcr.io/${{ steps.string.outputs.lowercase }}/my-fastapi-app:v2

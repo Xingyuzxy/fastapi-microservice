@@ -8,10 +8,10 @@ spec:
   source:
     repoURL: 'https://github.com/Xingyuzxy/fastapi-microservice.git' 
     targetRevision: main                                     
-    path: k8s                                                 
+    path: k8s/overlays/dev                                                 
   destination:
     server: 'https://kubernetes.default.svc'                  
-    namespace: default                                        
+    namespace: ns-dev                                        
   syncPolicy:
     automated:
       prune: true     

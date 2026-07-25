@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: fastapi-multicluster
-  namespace: argocd
 spec:
   generators:
   - clusters: {}
@@ -13,12 +12,14 @@ spec:
       project: default
       source:
         repoURL: 'https://github.com/Xingyuzxy/fastapi-microservice.git'
-        targetRevision: HEAD
+        targetRevision: main
         path: k8s/overlays/prod  
       destination:
         server: '{{server}}'   
-        namespace: production
+        namespace: ns-prod
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

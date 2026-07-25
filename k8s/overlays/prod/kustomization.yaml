@@ -6,7 +6,7 @@ resources:
 
 namePrefix: prod-
 
-namespace: ns-dev
+namespace: ns-prod
 
 patches:
   - path: patch-replicas.yaml

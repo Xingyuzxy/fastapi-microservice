@@ -3,6 +3,8 @@ name: CI CD pipelines
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'main.py'
 
 jobs:
   ci:

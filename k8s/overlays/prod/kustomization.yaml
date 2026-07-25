@@ -16,4 +16,4 @@ patches:
 
 images:
   - name: ghcr.io/xingyuzxy/my-fastapi-app
-    newTag: v2
+    newTag: v1

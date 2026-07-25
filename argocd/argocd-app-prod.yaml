@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fastapi-app
+  name: fastapi-app-prod
   namespace: argocd 
 spec:
   project: default

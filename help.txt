@@ -1,3 +1,9 @@
 kubectl config set-cluster cluster2 \
 > --server=https://10.244.223.43:6443
 Cluster "cluster2" set.
+
+curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+
+kubectl config use-context cluster1
+
+getent hosts cluster2-controlplane 找到IP

@@ -1,19 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
-
 metadata:
   name: fastapi-multicluster
-
 spec:
   goTemplate: true
-
   generators:
     - clusters: {}
-
   template:
     metadata:
       name: 'fastapi-app-{{.name}}'
-
     spec:
       project: default
 

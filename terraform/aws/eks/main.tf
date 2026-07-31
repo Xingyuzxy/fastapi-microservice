@@ -10,55 +10,55 @@ locals {
 }
 
 
-# resource "aws_iam_role" "eks_master_role" {
-#     name = "${local.name}-eks-master-role"
+resource "aws_iam_role" "eksClusterRole" {
+    name = "eksClusterRole"
 
-#     assume_role_policy = <<POLICY
-#     {
-#     "Version": "2012-10-17",
-#     "Statement": [
-#         {
-#         "Effect": "Allow",
-#         "Principal": {
-#             "Service": "eks.amazonaws.com"
-#         },
-#         "Action": "sts:AssumeRole"
-#         }
-#     ]
-# }
-# POLICY
-# }
+    assume_role_policy = <<POLICY
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Effect": "Allow",
+        "Principal": {
+            "Service": "eks.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+        }
+    ]
+}
+POLICY
+}
 
-# # Associate IAM Policy to IAM Role
-# resource "aws_iam_role_policy_attachment" "eks-AmazonEKSClusterPolicy" {
-#     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-#     role       = aws_iam_role.eks_master_role.name
-# }
+# Associate IAM Policy to IAM Role
+resource "aws_iam_role_policy_attachment" "eks-AmazonEKSClusterPolicy" {
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+    role       = aws_iam_role.eksClusterRole.name
+}
 
 # resource "aws_iam_role_policy_attachment" "eks-AmazonEKSVPCResourceController" {
 #     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
 #     role       = aws_iam_role.eks_master_role.name
 # }
 
-# resource "aws_iam_role" "eks_nodegroup_role" {
-#     name = "${local.name}-eks-nodegroup-role"
+resource "aws_iam_role" "AmazonEKSNodeRole" {
+    name = "AmazonEKSNodeRole"
 
-#     assume_role_policy = jsonencode({
-#         Statement = [{
-#         Action = "sts:AssumeRole"
-#         Effect = "Allow"
-#         Principal = {
-#             Service = "ec2.amazonaws.com"
-#         }
-#         }]
-#         Version = "2012-10-17"
-#     })
-# }
+    assume_role_policy = jsonencode({
+        Statement = [{
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+            Service = "ec2.amazonaws.com"
+        }
+        }]
+        Version = "2012-10-17"
+    })
+}
 
-# resource "aws_iam_role_policy_attachment" "eks-AmazonEKSWorkerNodePolicy" {
-#     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-#     role       = aws_iam_role.eks_nodegroup_role.name
-# }
+resource "aws_iam_role_policy_attachment" "eks-AmazonEKSWorkerNodePolicy" {
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+    role       = aws_iam_role.AmazonEKSNodeRole.name
+}
 
 # resource "aws_iam_role_policy_attachment" "eks-AmazonEKS_CNI_Policy" {
 #     policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
@@ -73,7 +73,7 @@ locals {
 # Create AWS EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
     name     = "${local.name}-${var.cluster_name}"
-    role_arn = "arn:aws:iam::339713012203:role/eksClusterRole"
+    role_arn = aws_iam_role.eksClusterRole.arn
     version = var.cluster_version
 
     vpc_config {
@@ -92,10 +92,10 @@ resource "aws_eks_cluster" "eks_cluster" {
 
     # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
     # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
-    # depends_on = [
-    #     aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy,
-    #     aws_iam_role_policy_attachment.eks-AmazonEKSVPCResourceController,
-    # ]
+    depends_on = [
+        aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy,
+        # aws_iam_role_policy_attachment.eks-AmazonEKSVPCResourceController,
+    ]
 }
 
 # Create AWS EKS Node Group - Public
@@ -103,7 +103,7 @@ resource "aws_eks_node_group" "eks_ng_public" {
     cluster_name    = aws_eks_cluster.eks_cluster.name
 
     node_group_name = "eks-ng-public"
-    node_role_arn   = "arn:aws:iam::339713012203:role/AmazonEKSNodeRole"
+    node_role_arn   = aws_iam_role.AmazonEKSNodeRole.name
     subnet_ids      = var.public_subnets 
     
     ami_type = "AL2_x86_64"  
@@ -129,11 +129,11 @@ resource "aws_eks_node_group" "eks_ng_public" {
 
     # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
     # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
-    # depends_on = [
-    #     aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
+    depends_on = [
+        aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
     #     aws_iam_role_policy_attachment.eks-AmazonEKS_CNI_Policy,
     #     aws_iam_role_policy_attachment.eks-AmazonEC2ContainerRegistryReadOnly,
-    # ] 
+    ] 
 
     tags = {
         Name = "Public-Node-Group"
@@ -173,11 +173,11 @@ resource "aws_eks_node_group" "eks_ng_private" {
 
     # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
     # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
-    # depends_on = [
-    #     aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
+    depends_on = [
+        aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
     #     aws_iam_role_policy_attachment.eks-AmazonEKS_CNI_Policy,
     #     aws_iam_role_policy_attachment.eks-AmazonEC2ContainerRegistryReadOnly,
-    # ]  
+    ]  
     tags = {
         Name = "Private-Node-Group"
     }

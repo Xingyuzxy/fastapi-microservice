@@ -57,3 +57,13 @@ variable "eks_oidc_root_ca_thumbprint" {
     description = "Thumbprint of Root CA for EKS OIDC, Valid until 2037"
     default     = "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
 }
+
+variable "public_subnets" {
+    type = list(string)
+    default = ["10.0.101.0/24", "10.0.102.0/24"]
+}
+
+variable "private_subnets" {
+    type = list(string)
+    default = ["10.0.1.0/24", "10.0.2.0/24"]
+}

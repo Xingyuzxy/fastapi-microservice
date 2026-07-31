@@ -29,15 +29,15 @@ output "cluster_security_group_id" {
     value       = [aws_eks_cluster.eks_cluster.vpc_config[0].security_group_ids]
 }
 
-output "cluster_iam_role_name" {
-    description = "IAM role name of the EKS cluster."
-    value       = aws_iam_role.eks_master_role.name 
-}
+# output "cluster_iam_role_name" {
+#     description = "IAM role name of the EKS cluster."
+#     value       = aws_iam_role.eks_master_role.name 
+# }
 
-output "cluster_iam_role_arn" {
-    description = "IAM role ARN of the EKS cluster."
-    value       = aws_iam_role.eks_master_role.arn
-}
+# output "cluster_iam_role_arn" {
+#     description = "IAM role ARN of the EKS cluster."
+#     value       = aws_iam_role.eks_master_role.arn
+# }
 
 output "cluster_oidc_issuer_url" {
     description = "The URL on the EKS cluster OIDC Issuer"

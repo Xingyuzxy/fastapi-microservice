@@ -31,12 +31,12 @@ output "cluster_security_group_id" {
 
 output "cluster_iam_role_name" {
     description = "IAM role name of the EKS cluster."
-    value       = aws_iam_role.eks_master_role.name 
+    value       = aws_iam_role.eksClusterRole.name 
 }
 
 output "cluster_iam_role_arn" {
     description = "IAM role ARN of the EKS cluster."
-    value       = aws_iam_role.eks_master_role.arn
+    value       = aws_iam_role.eksClusterRole.arn
 }
 
 output "cluster_oidc_issuer_url" {

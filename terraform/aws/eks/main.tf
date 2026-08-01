@@ -35,30 +35,30 @@ resource "aws_iam_role_policy_attachment" "eks-AmazonEKSClusterPolicy" {
     role       = aws_iam_role.eksClusterRole.name
 }
 
-# resource "aws_iam_role_policy_attachment" "eks-AmazonEKSVPCResourceController" {
-#     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-#     role       = aws_iam_role.eks_master_role.name
+resource "aws_iam_role_policy_attachment" "eks-AmazonEKSVPCResourceController" {
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+    role       = aws_iam_role.eksClusterRole.name
+}
+
+# resource "aws_iam_role" "AmazonEKSNodeRole" {
+#     name = "AmazonEKSNodeRole"
+
+#     assume_role_policy = jsonencode({
+#         Statement = [{
+#         Action = "sts:AssumeRole"
+#         Effect = "Allow"
+#         Principal = {
+#             Service = "ec2.amazonaws.com"
+#         }
+#         }]
+#         Version = "2012-10-17"
+#     })
 # }
 
-resource "aws_iam_role" "AmazonEKSNodeRole" {
-    name = "AmazonEKSNodeRole"
-
-    assume_role_policy = jsonencode({
-        Statement = [{
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-            Service = "ec2.amazonaws.com"
-        }
-        }]
-        Version = "2012-10-17"
-    })
-}
-
-resource "aws_iam_role_policy_attachment" "eks-AmazonEKSWorkerNodePolicy" {
-    policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-    role       = aws_iam_role.AmazonEKSNodeRole.name
-}
+# resource "aws_iam_role_policy_attachment" "eks-AmazonEKSWorkerNodePolicy" {
+#     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+#     role       = aws_iam_role.AmazonEKSNodeRole.name
+# }
 
 # resource "aws_iam_role_policy_attachment" "eks-AmazonEKS_CNI_Policy" {
 #     policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
@@ -94,7 +94,7 @@ resource "aws_eks_cluster" "eks_cluster" {
     # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
     depends_on = [
         aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy,
-        # aws_iam_role_policy_attachment.eks-AmazonEKSVPCResourceController,
+        aws_iam_role_policy_attachment.eks-AmazonEKSVPCResourceController,
     ]
 }
 

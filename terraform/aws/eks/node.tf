@@ -259,3 +259,9 @@ resource "aws_cloudformation_stack" "autoscaling_group" {
             Value: !Ref NodeGroup
     EOF
 }
+
+resource "aws_eks_access_entry" "worker_node" {
+    cluster_name  = var.cluster_name
+    principal_arn = aws_iam_role.eksClusterRole.arn
+    type          = "EC2_LINUX"
+}

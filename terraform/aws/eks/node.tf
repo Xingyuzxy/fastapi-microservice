@@ -157,6 +157,9 @@ resource "aws_vpc_security_group_egress_rule" "control_plane_egress_to_node_secu
 # Launch Template defines how the autoscaling group will create worker nodes.
 resource "aws_launch_template" "node_launch_template" {
     name = "NodeLaunchTemplate"
+    depends_on = [
+        aws_eks_access_entry.worker_node
+    ]
     block_device_mappings {
         device_name = "/dev/xvda"
         ebs {
@@ -258,10 +261,4 @@ resource "aws_cloudformation_stack" "autoscaling_group" {
             Description: "The autoscaling group"
             Value: !Ref NodeGroup
     EOF
-}
-
-resource "aws_eks_access_entry" "worker_node" {
-    cluster_name  = var.cluster_name
-    principal_arn = aws_iam_role.eksClusterRole.arn
-    type          = "EC2_LINUX"
 }

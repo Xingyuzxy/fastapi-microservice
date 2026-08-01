@@ -95,7 +95,9 @@ data "aws_ami" "amzlinux2" {
 }
 
 
-
+data "aws_ssm_parameter" "node_ami" {
+    name = "/aws/service/eks/optimized-ami/1.31/amazon-linux-2/recommended/image_id"
+}
 
 
 

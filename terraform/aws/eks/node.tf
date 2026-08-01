@@ -180,7 +180,7 @@ resource "aws_launch_template" "node_launch_template" {
         "Name" = "NodeLaunchTemplate"
     }
 
-    image_id = data.aws_ami.amzlinux2.id
+    image_id = data.aws_ssm_parameter.node_ami.id
 
     metadata_options {
         http_put_response_hop_limit = 2

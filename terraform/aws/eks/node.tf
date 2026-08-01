@@ -235,8 +235,8 @@ resource "aws_cloudformation_stack" "autoscaling_group" {
             Type: AWS::AutoScaling::AutoScalingGroup
             Properties:
                 VPCZoneIdentifier:
-                - "${var.public_subnets[0]}"
-                - "${var.public_subnets[1]}"
+                - "${var.private_subnets[0]}"
+                - "${var.private_subnets[1]}"
                 MinSize: "${var.node_group_min_size}"
                 MaxSize: "${var.node_group_max_size}"
                 DesiredCapacity: "${var.node_group_desired_capacity}"

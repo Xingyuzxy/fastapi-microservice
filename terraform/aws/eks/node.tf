@@ -231,31 +231,31 @@ resource "aws_cloudformation_stack" "autoscaling_group" {
     Description: "Node autoscaler"
 
     Resources:
-    NodeGroup:
-        Type: AWS::AutoScaling::AutoScalingGroup
-        Properties:
-        VPCZoneIdentifier:
-            - "${var.public_subnets[0]}"
-            - "${var.public_subnets[1]}"
-        MinSize: "${var.node_group_min_size}"
-        MaxSize: "${var.node_group_max_size}"
-        DesiredCapacity: "${var.node_group_desired_capacity}"
-        HealthCheckType: EC2
-        LaunchTemplate:
-            LaunchTemplateId: "${aws_launch_template.node_launch_template.id}"
-            Version: "${aws_launch_template.node_launch_template.latest_version}"
+        NodeGroup:
+            Type: AWS::AutoScaling::AutoScalingGroup
+            Properties:
+                VPCZoneIdentifier:
+                - "${var.public_subnets[0]}"
+                - "${var.public_subnets[1]}"
+                MinSize: "${var.node_group_min_size}"
+                MaxSize: "${var.node_group_max_size}"
+                DesiredCapacity: "${var.node_group_desired_capacity}"
+                HealthCheckType: EC2
+                LaunchTemplate:
+                    LaunchTemplateId: "${aws_launch_template.node_launch_template.id}"
+                    Version: "${aws_launch_template.node_launch_template.latest_version}"
 
-        UpdatePolicy:
-        AutoScalingScheduledAction:
-            IgnoreUnmodifiedGroupSizeProperties: true
-        AutoScalingRollingUpdate:
-            MaxBatchSize: 1
-            MinInstancesInService: "${var.node_group_desired_capacity}"
-            PauseTime: PT5M
+            UpdatePolicy:
+                AutoScalingScheduledAction:
+                    IgnoreUnmodifiedGroupSizeProperties: true
+                AutoScalingRollingUpdate:
+                    MaxBatchSize: 1
+                    MinInstancesInService: "${var.node_group_desired_capacity}"
+                    PauseTime: PT5M
 
     Outputs:
-    NodeAutoScalingGroup:
-        Description: "The autoscaling group"
-        Value: !Ref NodeGroup
+        NodeAutoScalingGroup:
+            Description: "The autoscaling group"
+            Value: !Ref NodeGroup
     EOF
 }

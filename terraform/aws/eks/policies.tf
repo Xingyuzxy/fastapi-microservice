@@ -5,5 +5,4 @@ resource "aws_iam_policy" "loadbalancer_policy" {
 
     policy = jsonencode(yamldecode(file("${path.module}/policy.yaml")))
 
-    tags = {}
 }

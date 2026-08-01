@@ -3,5 +3,7 @@ resource "aws_iam_policy" "loadbalancer_policy" {
     path        = "/"
     description = "Policy for granting rights to create loadbalancer services and EC2 volumes"
 
-    policy = jsonencode(yamldecode(file("./policy.yaml")))
+    policy = jsonencode(yamldecode(file("${path.module}/policy.yaml")))
+
+    tags = {}
 }

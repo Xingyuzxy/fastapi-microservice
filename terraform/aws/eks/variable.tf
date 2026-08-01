@@ -68,6 +68,31 @@ variable "private_subnets" {
     default = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
+variable "vpc_id" {
+    type = string
+    default = "123"
+}
+
+data "aws_ami" "amzlinux2" {
+    most_recent = true
+    owners = [ "amazon" ]
+    filter {
+        name = "name"
+        values = [ "amzn2-ami-hvm-*-gp2" ]
+    }
+    filter {
+        name = "root-device-type"
+        values = [ "ebs" ]
+    }
+    filter {
+        name = "virtualization-type"
+        values = [ "hvm" ]
+    }
+    filter {
+        name = "architecture"
+        values = [ "x86_64" ]
+    }
+}
 
 
 

@@ -78,7 +78,7 @@ resource "aws_iam_instance_profile" "node_instance_profile" {
 resource "aws_security_group" "node_security_group" {
     name        = "NodeSecurityGroupIngress"
     description = "Security group for all nodes in the cluster"
-    vpc_id      = data.aws_vpc.default_vpc.id
+    vpc_id      = var.vpc_id
     tags = {
         "Name" = "NodeSecurityGroupIngress"
     }
@@ -180,7 +180,7 @@ resource "aws_launch_template" "node_launch_template" {
         "Name" = "NodeLaunchTemplate"
     }
 
-    image_id = data.aws_ssm_parameter.node_ami.value
+    image_id = data.aws_ami.amzlinux2.id
 
     metadata_options {
         http_put_response_hop_limit = 2
@@ -231,7 +231,7 @@ resource "aws_cloudformation_stack" "autoscaling_group" {
     NodeGroup:
         Type: AWS::AutoScaling::AutoScalingGroup
         Properties:
-        VPCZoneIdentifier: ["${data.aws_subnets.public.ids[0]}","${data.aws_subnets.public.ids[1]}", "${data.aws_subnets.public.ids[2]}"]
+        VPCZoneIdentifier: ["${var.public_subnets[0]}","${var.public_subnets[1]}"]
         MinSize: "${var.node_group_min_size}"
         MaxSize: "${var.node_group_max_size}"
         DesiredCapacity: "${var.node_group_desired_capacity}"

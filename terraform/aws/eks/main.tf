@@ -219,12 +219,12 @@ output "aws_iam_openid_connect_provider_extract_from_arn" {
 
 resource "aws_eks_access_entry" "worker_node" {
     cluster_name  = var.cluster_name
-    principal_arn = aws_iam_role.node_instance_role
+    principal_arn = aws_iam_role.node_instance_role.arn
     type          = "EC2_LINUX"
 
     
     depends_on = [
         aws_eks_cluster.eks_cluster,         
-        aws_iam_role.eksClusterRole      
+        aws_iam_role.node_instance_role     
     ]
 }

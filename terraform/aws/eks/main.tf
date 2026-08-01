@@ -86,6 +86,11 @@ resource "aws_eks_cluster" "eks_cluster" {
     kubernetes_network_config {
         service_ipv4_cidr = var.cluster_service_ipv4_cidr
     }
+
+    access_config {
+        authentication_mode                         = "API_AND_CONFIG_MAP"
+        bootstrap_cluster_creator_admin_permissions = true
+    }
     
     # Enable EKS Cluster Control Plane Logging
     enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]

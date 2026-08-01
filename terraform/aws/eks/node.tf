@@ -171,7 +171,7 @@ resource "aws_launch_template" "node_launch_template" {
     }
 
     key_name      = aws_key_pair.eks_kp.key_name
-    instance_type = "t3.medium"
+    instance_type = "t3.micro"
     vpc_security_group_ids = [
         aws_security_group.node_security_group.id
     ]
@@ -180,7 +180,7 @@ resource "aws_launch_template" "node_launch_template" {
         "Name" = "NodeLaunchTemplate"
     }
 
-    image_id = data.aws_ssm_parameter.node_ami.id
+    image_id = data.aws_ssm_parameter.node_ami.value
 
     metadata_options {
         http_put_response_hop_limit = 2

@@ -1,12 +1,24 @@
 variable "resource_group_location" {
-  type        = string
-  default     = "eastus"
-  description = "Location of the resource group."
+    type        = string
+    default     = "eastus"
+    description = "Location of the resource group."
 }
 
 
 variable "resource_group_name" {
-  type        = string
-  default     = "kml_rg_main-ef53d344888d40fa"
-  description = "Resource group name in your Azure subscription."
+    type        = string
+    default     = "kml_rg_main-ef53d344888d40fa"
+    description = "Resource group name in your Azure subscription."
+}
+
+variable "business_divsion" {
+    description = "Business Division in the large organization this Infrastructure belongs"
+    type = string
+    default = "sap"
+}
+# Environment Variable
+variable "environment" {
+    description = "Environment Variable used as a prefix"
+    type = string
+    default = "dev"
 }

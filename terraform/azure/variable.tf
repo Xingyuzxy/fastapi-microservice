@@ -6,9 +6,9 @@ variable "resource_group_location" {
 
 
 variable "resource_group_name" {
-    type        = string
-    default     = "kml_rg_main-ef53d344888d40fa"
-    description = "Resource group name in your Azure subscription."
+  type        = string
+  default     = "kml_rg_main-a1d8c1809b604426"
+  description = "Resource group name in your Azure subscription."
 }
 
 variable "business_divsion" {

@@ -1,5 +1,6 @@
 provider "google" {
-    project = "gcplearn9"
-    region = "us-east1"
-    alias = "us-east1"    
+    project = var.project_id
+    region = var.region
+    zone = var.zone 
+    alias = "us-central1"   
 }

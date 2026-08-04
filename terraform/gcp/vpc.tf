@@ -1,6 +1,6 @@
 # Resource: VPC
 resource "google_compute_network" "myvpc" {
-    project = "gcplearn9"
+    project = var.project_id
     name = "vpc1"
     auto_create_subnetworks = false   
 }
@@ -15,7 +15,7 @@ resource "google_compute_subnetwork" "mysubnet1" {
 
 # Resource: Subnet2
 resource "google_compute_subnetwork" "mysubnet2" {
-    provider = google.europe-west1   # Define provider to use
+    provider = google.us-central1   # Define provider to use
     name = "subnet2"
     ip_cidr_range = "10.132.0.0/20"
     network = google_compute_network.myvpc.id 

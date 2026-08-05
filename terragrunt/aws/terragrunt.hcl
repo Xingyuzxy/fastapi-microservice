@@ -1,19 +1,15 @@
 # infrastructure-live/aws/root.hcl
 include "root" {
     path = find_in_parent_folders("root.hcl")
+    expose = true
 }
 
 locals {
-    aws_account_ids = {
-        dev  = "123456789012"
-        prod = "987654321098"
-    }
-    
-    aws_account_id = local.aws_account_ids[local.environment]
-    region = get_env("AWS_REGION", "us-east-1")
-    
 
-    aws_tags = merge(local.common_tags, {
+    root_config = read_terragrunt_config(find_in_parent_folders("root.hcl"))
+    region = get_env("AWS_REGION", "us-east-1")
+
+    aws_tags = merge(include.root.locals.common_tags, {
         CloudProvider = "AWS"
     })
 }
@@ -50,7 +46,5 @@ remote_state {
 }
 
 inputs = {
-    aws_account_id = local.aws_account_id
-    aws_region     = local.region
-    aws_tags       = local.aws_tags
+
 }

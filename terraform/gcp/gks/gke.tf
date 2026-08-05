@@ -15,9 +15,9 @@ resource "google_container_cluster" "gke_cluster" {
     remove_default_node_pool = true
     initial_node_count       = 1
     # Network
-    network = google_compute_network.myvpc.self_link
-    subnetwork = google_compute_subnetwork.mysubnet1.self_link
-    # In production, change it to true (Enable it to avoid accidental deletion)
+    network = var.vpc_self_link
+    subnetwork = var.subnet_self_link
+    # In production, change it to true (Enable  to avoid accidental deletion)
     deletion_protection = false
 }
 

@@ -1,0 +1,46 @@
+# production-values.yaml
+prometheus:
+  prometheusSpec:
+    replicas: 2   
+    retention: 15d 
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: ssd  
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 200Gi  
+    
+    resources:
+      requests:
+        memory: 4Gi
+        cpu: 2
+      limits:
+        memory: 8Gi
+        cpu: 4
+
+grafana:
+  replicas: 1
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClassName: ssd
+  
+  adminPassword: "admin"   
+  
+  # Grafana 插件
+  plugins:
+    - grafana-piechart-panel
+
+alertmanager:
+  replicas: 2
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: ssd
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
+

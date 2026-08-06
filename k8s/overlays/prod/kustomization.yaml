@@ -12,7 +12,11 @@ patches:
   - path: patch-replicas.yaml
     target:
       kind: Deployment
-      name: fastapi-app   
+      name: fastapi-app  
+  - path: patch-service.yaml
+    target:
+      kind: Service
+      name: fastapi-service 
 
 images:
   - name: ghcr.io/xingyuzxy/my-fastapi-app
